@@ -6,6 +6,8 @@ Webthings RESTful API for Awox's "SmartLight" (SKRLm-c9-E27).
 
 This lightbulb is supporting Bluetooth mesh.
 
+.. image:: https://peertube.mastodon.host/static/previews/058df607-2ca9-4a2c-be42-286644e5071e.jpg
+   :target: https://mastodon.social/@rzr/104250255817500884#
 
 USAGE
 =====
@@ -32,3 +34,4 @@ RESOURCES
 * https://www.upcitemdb.com/upc/3760118941004
 * https://en.wikipedia.org/wiki/Bluetooth_mesh_networking
 * https://purl.org/rzr/presentations
+* https://libregraphicsmeeting.org/2020/en/program.html
