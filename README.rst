@@ -17,9 +17,11 @@ This lightbulb is supporting Bluetooth mesh.
 USAGE
 =====
 
+As standalone webthing
+
 ::
 
-   MAC=A4:C1:38:78:11:33 ./awox_mesh_light_single_webthing.py
+   MAC=A4:C1:38:FF:FF:FF ./awox_mesh_light_single_webthing.py
 
    curl http://localhost:8888/properties
    #| {"on": true, "brightness": 50, "color": "#ffffff"}
@@ -27,6 +29,21 @@ USAGE
    curl -X PUT --data '{"color": "#00A000"}' \
      -H 'Content-Type: "application/json" ' \
      "http://localhost:8888/properties/color"
+
+
+DEVELOP
+=======
+
+On Mozilla IoT gateway, adapter can be run from shell using:
+
+::
+   sudo hcitool lescan
+   #| LE Scan ...
+   #| A4:C1:38:ff:ff:ff unpaired
+   #| A4:C1:38:ff:ff:ff (unknown)
+
+   pip3 install --user -r requirements.txt
+   MAC=A4:C1:38:ff:ff:ff ./main.py
 
 
 RESOURCES
