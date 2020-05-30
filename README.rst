@@ -2,6 +2,11 @@
 AWOX-MESH-LIGHT-WEBTHING
 ========================
 
+|GitHub|
+|License|
+|PyPi|
+|Fediverse|
+
 Webthings RESTful API for Awox's "SmartLight" (SKRLm-c9-E27).
 
 This lightbulb is supporting Bluetooth mesh.
@@ -14,7 +19,7 @@ USAGE
 
 ::
 
-   MAC=A4:C1:38:78:11:33 ./awox_mesh_light_single_webthing.py 
+   MAC=A4:C1:38:78:11:33 ./awox_mesh_light_single_webthing.py
 
    curl http://localhost:8888/properties
    #| {"on": true, "brightness": 50, "color": "#ffffff"}
@@ -23,7 +28,7 @@ USAGE
      -H 'Content-Type: "application/json" ' \
      "http://localhost:8888/properties/color"
 
-    
+
 RESOURCES
 =========
 
@@ -35,3 +40,13 @@ RESOURCES
 * https://en.wikipedia.org/wiki/Bluetooth_mesh_networking
 * https://purl.org/rzr/presentations
 * https://libregraphicsmeeting.org/2020/en/program.html
+
+
+.. |GitHub| image:: https://img.shields.io/github/forks/rzr/awox-mesh-light-webthing.svg?style=social&label=Fork&maxAge=2592000
+   :target: https://GitHub.com/rzr/awox-mesh-light-webthing/network/
+.. |License| image:: https://img.shields.io/badge/License-MIT-blue.svg
+   :target: https://github.com/rzr/awox-mesh-light-webthing/blob/master/LICENSE
+.. |PyPI| image:: https://img.shields.io/pypi/v/awox-mesh-light-webthing.svg
+   :target: https://pypi.org/project/awox-mesh-light-webthing
+.. |Fediverse| image:: https://img.shields.io/mastodon/follow/279303?domain=https%3A%2F%2Fmastodon.social&style=social
+   :target: https://mastodon.social/@rzr/104246455002891688
