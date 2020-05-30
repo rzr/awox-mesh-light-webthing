@@ -3,6 +3,9 @@
 # SPDX-License-Identifier: MIT
 # Copyright: Philippe Coval <https://purl.org/rzr/>
 
+default: help all
+
+project?=awox-mesh-light-adapter
 port?=8080
 mac?=A4:C1:38:FF:FF:FF
 webthing_port?=8888
@@ -12,6 +15,7 @@ help:
 	@echo "## Usage:"
 	@echo "# make start # To start Webthings"
 	@echo "# make aframe/start # To start browser"
+	@echo "# make rule/version/X.Y.Z # To update manifest"
 
 start: example/awox_mesh_light_single_webthing.py
 	MAC=${mac} $<
@@ -38,3 +42,12 @@ demo:
 aframe/start: extra/aframe
 	@echo "# http://localhost:${port}/$<"
 	python -m SimpleHTTPServer ${port}
+
+rule/version/%: manifest.json package.json setup.py
+	-git describe --tags
+	sed -e "s|\(\"version\":\) .*|\1 \"${@F}\"|g" -i $<
+	sed -e "s|\(\"version\":\) .*|\1 \"${@F}\",|g" -i package.json
+	sed -e "s|\(.*version='\).*\('.*\)|\1${@F}\2|g" -i setup.py
+	-git commit -sm "Release ${@F}" $^
+	-git tag -sam "${project}-${@F}" "v${@F}" \
+|| git tag -am "${project}-${@F}" "v${@F}"
