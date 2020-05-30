@@ -1,0 +1,40 @@
+{
+  "name": "awox-mesh-light-adapter",
+  "display_name": "Awox Mesh Light",
+  "version": "0.0.0",
+  "description": "Awox Mesh Light adapter plugin for Mozilla WebThings Gateway",
+  "author": "Philippe Coval",
+  "main": "main.py",
+  "keywords": [
+    "mozilla",
+    "iot",
+    "light",
+    "smartlight",
+    "lightbulb"
+  ],
+  "homepage": "https://github.com/rzr/awox-mesh-light-webthing",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rzr/awox-mesh-light-webthing.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rzr/awox-mesh-light-webthing/issues"
+  },
+  "files": [
+    "LICENSE",
+    "README.rst",
+    "SHA256SUMS",
+    "main.py",
+    "adapter/__init__.py",
+    "adapter/device.py"
+  ],
+  "moziot": {
+    "api": {
+      "min": 2,
+      "max": 2
+    },
+    "plugin": true,
+    "exec": "python3 {path}/main.py"
+  }
+}

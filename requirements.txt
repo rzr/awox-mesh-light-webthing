@@ -1,0 +1,3 @@
+# -*- coding: utf-8 -*- 
+# SPDX-License-Indentifier: MIT
+# Copyright: Phil Coval <https://purl.org/rzr>
