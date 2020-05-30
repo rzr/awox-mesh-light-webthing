@@ -6,8 +6,13 @@
 
 import os
 
+from awoxmeshlight import AwoxMeshLight
 from gateway_addon import Adapter
 from .device import AwoxMeshLightDevice
+
+
+MAC = os.getenv('MAC') or "A4:C1:38:FF:FF:FF"
+
 
 class AwoxMeshLightAdapter(Adapter):
     """Adapter for Awox Mesh Light"""
@@ -28,6 +33,8 @@ class AwoxMeshLightAdapter(Adapter):
                          self.addon_name, self.addon_name, verbose=verbose)
 
         try:
+            self.controller = AwoxMeshLight(MAC)
+
             device = AwoxMeshLightDevice(self)
             self.handle_device_added(device)
             if self.DEBUG:
