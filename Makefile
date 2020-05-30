@@ -1,3 +1,8 @@
+#!/bin/make -f
+# -*- makefile -*-
+# SPDX-License-Identifier: MIT
+# Copyright: Philippe Coval <https://purl.org/rzr/>
+
 port?=8080
 mac?=A4:C1:38:FF:FF:FF
 webthing_port?=8888
