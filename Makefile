@@ -6,10 +6,17 @@
 default: help all
 
 project?=awox-mesh-light-adapter
+project_url ?= https://github.com/rzr/awox-mesh-light-webthing
 port?=8080
 mac?=A4:C1:38:FF:FF:FF
 webthing_port?=8888
 webthing_url?=http://localhost:${webthing_port}
+builder_url ?= https://github.com/mozilla-iot/addon-builder
+builder_dir ?= tmp/addon-builder
+module_dir ?= ${builder_dir}/${project}
+addons_url ?= https://github.com/mozilla-iot/addon-list
+addons_dir ?= tmp/addon-list
+addons_json ?= ${addons_dir}/addons/${project}.json
 
 help:
 	@echo "## Usage:"
@@ -51,3 +58,16 @@ rule/version/%: manifest.json package.json setup.py
 	-git commit -sm "Release ${@F}" $^
 	-git tag -sam "${project}-${@F}" "v${@F}" \
 || git tag -am "${project}-${@F}" "v${@F}"
+
+rule/builder: ${module_dir}
+	cd ${<D} \
+ && git commit -sam "${project}: Add module" \
+ || git commit -am "${project}: Add module"
+
+${module_dir}: ${builder_dir}
+	cd $< && git submodule add ${project_url} ${project}
+	cd "$@" && git describe --tags
+
+${builder_dir}:
+	mkdir -p ${@D}
+	git clone ${builder_url} ${builder_dir}
