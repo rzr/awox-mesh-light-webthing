@@ -37,6 +37,7 @@ DEVELOP
 On Mozilla IoT gateway, adapter can be run from shell using:
 
 ::
+   
    sudo hcitool lescan
    #| LE Scan ...
    #| A4:C1:38:ff:ff:ff unpaired
@@ -57,7 +58,7 @@ RESOURCES
 * https://en.wikipedia.org/wiki/Bluetooth_mesh_networking
 * https://purl.org/rzr/presentations
 * https://libregraphicsmeeting.org/2020/en/program.html
-
+* https://github.com/mozilla-iot/addon-list/pull/851
 
 .. |GitHub| image:: https://img.shields.io/github/forks/rzr/awox-mesh-light-webthing.svg?style=social&label=Fork&maxAge=2592000
    :target: https://GitHub.com/rzr/awox-mesh-light-webthing/network/
