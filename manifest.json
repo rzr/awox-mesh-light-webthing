@@ -18,7 +18,9 @@
   "version": "0.0.3",
   "options": {
     "default": {
-      "address": "A4:C1:38:ff:ff:ff"
+      "address": "A4:C1:38:ff:ff:ff",
+      "name": "unpaired",
+      "password": "1234"
     },
     "schema": {
       "type": "object",
@@ -26,6 +28,14 @@
       "properties": {
         "address": {
           "description": "Mac address of light",
+          "type": "string"
+        },
+        "name": {
+          "description": "Mesh Name",
+          "type": "string"
+        },
+        "password": {
+          "description": "Mesh Password",
           "type": "string"
         }
       }
