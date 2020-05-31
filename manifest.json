@@ -15,5 +15,20 @@
   "manifest_version": 1,
   "name": "Awox Mesh Light",
   "short_name": "Awox Mesh Light",
-  "version": "0.0.3"
+  "version": "0.0.3",
+  "options": {
+    "default": {
+      "address": "A4:C1:38:ff:ff:ff"
+    },
+    "schema": {
+      "type": "object",
+      "description": "Configuration of light",
+      "properties": {
+        "address": {
+          "description": "Mac address of light",
+          "type": "string"
+        }
+      }
+    }
+  }
 }
