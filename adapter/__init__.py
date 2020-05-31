@@ -7,11 +7,8 @@
 import os
 
 from awoxmeshlight import AwoxMeshLight
-from gateway_addon import Adapter
+from gateway_addon import Adapter, Database
 from .device import AwoxMeshLightDevice
-
-
-MAC = os.getenv('MAC') or "A4:C1:38:FF:FF:FF"
 
 
 class AwoxMeshLightAdapter(Adapter):
@@ -26,14 +23,33 @@ class AwoxMeshLightAdapter(Adapter):
 
         self.pairing = False
         self.addon_name = 'awox-mesh-light'
-        self.DEBUG = True
+        self.DEBUG = False
         self.name = self.__class__.__name__
         self.URL = 'https://github.com/rzr/awox-mesh-light-webthing'
         Adapter.__init__(self,
                          self.addon_name, self.addon_name, verbose=verbose)
 
         try:
-            self.controller = AwoxMeshLight(MAC)
+            self._add_from_config()
+
+        except Exception as ex:
+            print("error: Could not create awox_mesh_light_device: " + str(ex))
+
+
+    def _add_from_config(self):
+        """Attempt to add all configured devices."""
+        database = Database('awox-mesh-light-adapter')
+        if not database.open():
+            return
+
+        config = database.load_config()
+        database.close()
+
+        if not config or 'address' not in config:
+            return
+        try:
+            self.DEBUG and print(config['address'])
+            self.controller = AwoxMeshLight(config['address'])
 
             device = AwoxMeshLightDevice(self)
             self.handle_device_added(device)
