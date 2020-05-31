@@ -109,7 +109,7 @@ done
 
 
 rule/wait:
-	while true ; do ${MAKE} rule/url | grep 'HTTP/1.1 200' && exit 0 ; done
+	while true ; do ${MAKE} rule/urls | grep 'HTTP/1.1 200' && exit 0 ; done
 
 lint:
 	pylint3 *.py */*.py
