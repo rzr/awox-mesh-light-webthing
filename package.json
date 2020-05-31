@@ -36,15 +36,5 @@
     },
     "plugin": true,
     "exec": "python3 {path}/main.py"
-  },
-  "schema": {
-    "type": "object",
-    "description": "Configuration of light",
-    "properties": {
-      "address": {
-        "description": "Mac address of light",
-        "type": "string"
-      }
-    }
   }
 }
