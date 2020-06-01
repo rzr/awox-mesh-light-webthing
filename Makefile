@@ -53,10 +53,12 @@ aframe/start: extra/aframe
 
 rule/version/%: manifest.json package.json setup.py
 	-git describe --tags
-	jq < $< | jq '.version |= "${@F}"' > $<.tmp
-	jq < $<.tmp > $<
+	jq < "$<" | jq '.version |= "${@F}"' > "$<.tmp"
+	jq < "$<.tmp" > "$<"
+	rm -f "$<.tmp"
 	jq < package.json | jq '.version |= "${@F}"' > package.json.tmp
 	jq < package.json.tmp > package.json
+	rm -f "package.json.tmp"
 	sed -e "s|\(.*version='\).*\('.*\)|\1${@F}\2|g" -i setup.py
 	-git commit -sm "Release ${@F}" $^
 	-git tag -sam "${project}-${@F}" "v${@F}" \
@@ -86,15 +88,15 @@ rule/release/%: ${addons_json} rule/version/%
 ${addons_json}:
 	mkdir -p "${addons_dir}"
 	git clone ${addons_url} "${addons_dir}"
-	jq $@
+	jq < "$@"
 
 rule/urls: ${addons_json}
-	cat $< | jq '.packages[].url' | xargs -n1 echo \
+	jq '.packages[].url' < "$<" | xargs -n1 echo \
 | while read url ; do curl -s -I "$${url}"; done
 
 
 tmp/checksums.lst: ${addons_json} # Makefile
-	@cat $< | jq '.packages[].url' | xargs -n1 echo \
+	@jq '.packages[].url' < "$<" | xargs -n1 echo \
 | while read url ; do curl -s -I "$${url}" | grep 'HTTP/1.1 200' > /dev/null \
 && curl -s "$${url}" | sha256sum - ; done | cut -d' ' -f1 | tee $@.tmp
 	mv $@.tmp $@
@@ -108,12 +110,15 @@ rule/checksum/update: ${addons_json} tmp/checksums.lst
   i=$$(expr 1 + $${i}) ; \
 done
 	mv "$<.tmp" "$<"
-	jq "$<"
+	jq < "$<"
 	cd ${<D} && git commit -sam "${project}: Update checksums from URLs"
 
 
 rule/wait:
-	while true ; do ${MAKE} rule/urls | grep 'HTTP/1.1 200' && exit 0 ; done
+	while true ; do \
+  ${MAKE} rule/urls | grep 'HTTP/1.1 200' && exit 0; \
+  sleep 1; \
+done
 
 lint:
 	pylint3 *.py */*.py
