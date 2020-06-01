@@ -1,7 +1,7 @@
 {
   "name": "awox-mesh-light-adapter",
   "display_name": "Awox Mesh Light",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Awox Mesh Light adapter plugin for Mozilla WebThings Gateway",
   "author": "Philippe Coval",
   "main": "main.py",
