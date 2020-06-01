@@ -2,6 +2,5 @@
 # SPDX-License-Indentifier: MIT
 # Copyright: Phil Coval <https://purl.org/rzr>
 
-# TODO: https://github.com/Leiaz/python-awox-mesh-light/issues/16
-git+https://github.com/Leiaz/python-awox-mesh-light@ca71b4c
+awoxmeshlight==0.1.0
 webthing==0.13.1
