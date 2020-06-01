@@ -53,8 +53,10 @@ aframe/start: extra/aframe
 
 rule/version/%: manifest.json package.json setup.py
 	-git describe --tags
-	sed -e "s|\(\"version\":\) .*|\1 \"${@F}\"|g" -i $<
-	sed -e "s|\(\"version\":\) .*|\1 \"${@F}\",|g" -i package.json
+	jq < $< | jq '.version |= "${@F}"' > $<.tmp
+	jq < $<.tmp > $<
+	jq < package.json | jq '.version |= "${@F}"' > package.json.tmp
+	jq < package.json.tmp > package.json
 	sed -e "s|\(.*version='\).*\('.*\)|\1${@F}\2|g" -i setup.py
 	-git commit -sm "Release ${@F}" $^
 	-git tag -sam "${project}-${@F}" "v${@F}" \
@@ -84,7 +86,7 @@ rule/release/%: ${addons_json} rule/version/%
 ${addons_json}:
 	mkdir -p "${addons_dir}"
 	git clone ${addons_url} "${addons_dir}"
-	ls $@
+	jq $@
 
 rule/urls: ${addons_json}
 	cat $< | jq '.packages[].url' | xargs -n1 echo \
@@ -106,6 +108,7 @@ rule/checksum/update: ${addons_json} tmp/checksums.lst
   i=$$(expr 1 + $${i}) ; \
 done
 	mv "$<.tmp" "$<"
+	jq "$<"
 	cd ${<D} && git commit -sam "${project}: Update checksums from URLs"
 
 
