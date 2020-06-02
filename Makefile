@@ -17,6 +17,11 @@ module_dir ?= ${builder_dir}/${project}
 addons_url ?= https://github.com/mozilla-iot/addon-list
 addons_dir ?= tmp/addon-list
 addons_json ?= ${addons_dir}/addons/${project}.json
+addons_review_org ?= ${USER}
+addons_review_branch ?= sandbox/${USER}/review/master
+addons_review_url ?= ssh://github.com/${addons_review_org}/addon-list
+addons_review_http_url ?= ${addons_url}/compare/master...${addons_review_org}:${addons_review_branch}?expand=1
+
 
 help:
 	@echo "## Usage:"
@@ -77,13 +82,23 @@ ${builder_dir}:
 	mkdir -p ${@D}
 	git clone ${builder_url} ${builder_dir}
 
+rule/addons/push: ${addons_json}
+	jq < "$<" > /dev/null
+	cd ${<D} \
+&& git --no-pager diff \
+&& git commit -am "${project}: ${message}"
+	@echo "# About to push to ${addons_review_url}"
+	@echo "# Stop now with ctrl+c"
+	sleep 5
+	cd ${<D} \
+&& git push ${addons_review_url} -f  HEAD:${addons_review_branch}
+	@echo "# Request merge at"
+	@echo "# ${addons_review_http_url}"
 
 rule/release/%: ${addons_json} rule/version/%
 	sed -e "s|\(.*\"version\": \)\"\(.*\)\"\(.*\)|\1\"${@F}\"\3|g" -i $<
 	sed -e "s|\(.*/${project}-\)\([0-9.]*\)\(-.*\)|\1${@F}\3|g" -i $<
-	cd ${<D} \
-&& git --no-pager diff \
-&& git commit -am "${project}: Update to ${@F}"
+	${MAKE} rule/addons/push message="Update to ${@F}"
 
 ${addons_json}:
 	mkdir -p "${addons_dir}"
@@ -97,8 +112,11 @@ rule/urls: ${addons_json}
 
 tmp/checksums.lst: ${addons_json} # Makefile
 	@jq '.packages[].url' < "$<" | xargs -n1 echo \
-| while read url ; do curl -s -I "$${url}" | grep 'HTTP/1.1 200' > /dev/null \
-&& curl -s "$${url}" | sha256sum - ; done | cut -d' ' -f1 | tee $@.tmp
+| while read url ; do sleep 1 ; \
+curl -s -I "$${url}" | grep 'HTTP/1.1 200' > /dev/null \
+&& curl -s "$${url}" | sha256sum - ; \
+done \
+| cut -d' ' -f1 | tee $@.tmp
 	mv $@.tmp $@
 
 rule/checksum/update: ${addons_json} tmp/checksums.lst
@@ -109,16 +127,20 @@ rule/checksum/update: ${addons_json} tmp/checksums.lst
   mv "$<.out.tmp" "$<.tmp" ; \
   i=$$(expr 1 + $${i}) ; \
 done
+	jq < "$<.tmp" > /dev/null
 	mv "$<.tmp" "$<"
-	jq < "$<"
-	cd ${<D} && git commit -sam "${project}: Update checksums from URLs"
-
 
 rule/wait:
-	while true ; do \
-  ${MAKE} rule/urls | grep 'HTTP/1.1 200' && exit 0; \
+	@printf "# Scanning: "
+	@while true ; do \
+  ${MAKE} rule/urls | grep 'HTTP/1.1 200' && exit 0 \
+  || printf "."; \
   sleep 1; \
 done
+
+rule/checksum/push: rule/wait rule/checksum/update
+	${MAKE} rule/addons/push message="Update checksums from URLs"
+
 
 lint:
 	pylint3 *.py */*.py
