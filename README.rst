@@ -17,7 +17,26 @@ This lightbulb is supporting Bluetooth mesh.
 USAGE
 =====
 
-As standalone webthing
+Prerequisite, smart light BLE's network configuration
+should be first set from any system supporting BLE as
+explained on following page.
+Success has been reported using Raspberry Pi3+
+or some USB dongle (eg: 0a12:0001)
+
+* https://github.com/Leiaz/python-awox-mesh-light
+  
+For Mozilla's IoT gateway's users,
+addon can be installed from mozilla's repository:
+
+* http://gateway.local:8080/settings/addons/discovered
+
+Then once added and enabled, mesh's credentials should be configured from addon page:
+
+* http://gateway.local:8080/settings/addons/
+
+Note: Mesh's default name is "unpaired" and "1234" is default password.
+
+For developers, check standalone webthing example:
 
 ::
 
@@ -59,7 +78,9 @@ RESOURCES
 * https://purl.org/rzr/presentations
 * https://libregraphicsmeeting.org/2020/en/program.html
 * https://github.com/mozilla-iot/addon-list/pull/851
-
+* https://libraries.io/pypi/webthing
+* https://github.com/mozilla-iot/wiki/wiki/HOWTO:-Create-an-add-on
+  
 .. |GitHub| image:: https://img.shields.io/github/forks/rzr/awox-mesh-light-webthing.svg?style=social&label=Fork&maxAge=2592000
    :target: https://GitHub.com/rzr/awox-mesh-light-webthing/network/
 .. |License| image:: https://img.shields.io/badge/License-MIT-blue.svg
