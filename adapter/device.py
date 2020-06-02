@@ -3,9 +3,10 @@
 # Copyright: Phil Coval <https://purl.org/rzr>
 """AwoxMeshLight adapter for Mozilla WebThings Gateway."""
 
+import os
 from gateway_addon import Device, Property
 
-_DEBUG = False
+_DEBUG = bool(os.getenv('DEBUG')) or False
 
 class AwoxMeshLightDevice(Device):
     """AwoxMeshLight device type."""
@@ -20,8 +21,11 @@ class AwoxMeshLightDevice(Device):
         self.id = self._id = 'awox-mesh-light'
         self.adapter = adapter
         self.controller = adapter.controller
+        if _DEBUG:
+            print("info: connecting: address=%s" % self.controller.mac)
         self.controller.connect()
-        _DEBUG and print(self.controller.getModelNumber())
+        if _DEBUG:
+            print("info: connected: model=%s" % self.controller.getModelNumber())
 
         self.name = 'AwoxMeshLight'
         self.description = 'Expose AwoxMeshLight actuators'
