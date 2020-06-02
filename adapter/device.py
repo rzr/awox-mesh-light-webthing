@@ -5,6 +5,7 @@
 
 import os
 import random
+
 from gateway_addon import Action, Device, Property
 
 _DEBUG = bool(os.getenv('DEBUG')) or False
@@ -40,6 +41,25 @@ class AwoxMeshLightDevice(Device):
         self._type = ['OnOffSwitch', 'MultiLevelSwitch', 'Light', 'ColorControl']
 
         try:
+            self.properties['preset'] = AwoxMeshLightProperty(
+                self,
+                "preset",
+                {
+                    '@type': 'NumberProperty',
+                    'label': "Preset",
+                    'type': 'integer',
+                    'enum': [0, # Red...
+                             1, # Magenta...
+                             2, # Yellow...
+                             3, # Green...
+                             4, # Blue...
+                             5, # Blue (solid)
+                             6  # Purple (solid)
+                    ]
+                },
+                6)
+            self.controller.setPreset(6);
+
             self.properties['on'] = AwoxMeshLightProperty(
                 self,
                 "on",
@@ -49,8 +69,8 @@ class AwoxMeshLightDevice(Device):
                     'type': 'boolean',
                     'description': 'Whether the lamp is turned on',
                 },
-                False)
-            self.controller.off()
+                True)
+            self.controller.on()
 
             self.properties['brightness'] = AwoxMeshLightProperty(
                 self,
@@ -162,6 +182,8 @@ class AwoxMeshLightProperty(Property):
             elif self.name == 'color':
                 color = AwoxMeshLightDevice.hex_to_rgb(value)
                 self.device.controller.setColor(**color)
+            elif self.name == 'preset':
+                self.device.controller.setPreset(value)
 
             self.set_cached_value(value)
             self.device.notify_property_changed(self)
