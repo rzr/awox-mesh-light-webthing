@@ -49,7 +49,8 @@ class AwoxMeshLightAdapter(Adapter):
             return
         try:
             self.DEBUG and print(config['address'])
-            self.controller = AwoxMeshLight(config['address'])
+            self.controller = AwoxMeshLight(config['address'],
+                                            config['name'], config['password'])
 
             device = AwoxMeshLightDevice(self)
             self.handle_device_added(device)
