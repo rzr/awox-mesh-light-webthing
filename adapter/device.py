@@ -4,7 +4,8 @@
 """AwoxMeshLight adapter for Mozilla WebThings Gateway."""
 
 import os
-from gateway_addon import Device, Property
+import random
+from gateway_addon import Action, Device, Property
 
 _DEBUG = bool(os.getenv('DEBUG')) or False
 
@@ -78,10 +79,50 @@ class AwoxMeshLightDevice(Device):
                 '#ffffff')
             self.controller.setColor(0xFF, 0xFF, 0xFF)
 
+            self.add_action(
+                'cold',
+                {
+                    'title': 'Cold White'
+                }
+            )
+            self.add_action(
+                'warm',
+                {
+                    'title': 'Warm White'
+                }
+            )
+
+            self.add_action(
+                'random',
+                {
+                    'title': 'Random Color',
+                }
+            )
             self.pairing = True
 
         except Exception as ex:
             print("error: Adding properties: " + str(ex))
+
+    def perform_action(self, action):
+        if _DEBUG:
+            print(action.__dict__)
+        try:
+            if action.name == 'random':
+                color = "#%06x" % random.randint(0, 0xFFFFFF)
+                self.set_property('color', color)
+            elif action.name == 'cold':
+                self.set_property('color', "#ffffff")
+                self.set_property('brightness', 100)
+                self.set_property('on', True)
+                self.controller.setWhite(0x00, 0x7F)
+            elif action.name == 'warm':
+                self.set_property('color', "#ffffff")
+                self.set_property('brightness', 100)
+                self.set_property('on', True)
+                self.controller.setWhite(0x73, 0x63)
+        except Exception:
+            if _DEBUG:
+                print("error: Failed to set_property")
 
     @staticmethod
     def hex_to_rgb(text):
