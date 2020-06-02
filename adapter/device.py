@@ -110,16 +110,20 @@ class AwoxMeshLightProperty(Property):
                   + " from " + str(self.value) + " to " + str(value))
         if value == self.value:
             return
-        if self.name == 'on':
-            if bool(value):
-                self.device.controller.on()
-            else:
-                self.device.controller.off()
-        elif self.name == 'brightness':
-            self.device.controller.setColorBrightness(int(value))
-        elif self.name == 'color':
-            color = AwoxMeshLightDevice.hex_to_rgb(value)
-            self.device.controller.setColor(**color)
+        try:
+            if self.name == 'on':
+                if bool(value):
+                    self.device.controller.on()
+                else:
+                    self.device.controller.off()
+            elif self.name == 'brightness':
+                self.device.controller.setColorBrightness(int(value))
+            elif self.name == 'color':
+                color = AwoxMeshLightDevice.hex_to_rgb(value)
+                self.device.controller.setColor(**color)
 
-        self.set_cached_value(value)
-        self.device.notify_property_changed(self)
+            self.set_cached_value(value)
+            self.device.notify_property_changed(self)
+        except Exception:
+            if _DEBUG:
+                print("error: Failed to set_property")
