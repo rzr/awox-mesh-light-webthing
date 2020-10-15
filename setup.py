@@ -27,7 +27,7 @@ setup(
     url=URL,
     author='Philippe Coval',
     author_email='rzr@users.sf.net',
-    keywords='Awox mesh light bluetooth mozilla iot web thing webthing',
+    keywords='Awox mesh light bluetooth web thing webthing',
     packages=find_packages(),
     install_requires=requirements,
     classifiers=[
