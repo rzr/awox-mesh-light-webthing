@@ -25,8 +25,7 @@ or some USB dongle (eg: 0a12:0001)
 
 * https://github.com/Leiaz/python-awox-mesh-light
   
-For Mozilla's IoT gateway's users,
-addon can be installed from mozilla's repository:
+For WebThings users, addon can be installed from the addon repository:
 
 * http://gateway.local:8080/settings/addons/discovered
 
@@ -53,7 +52,7 @@ For developers, check standalone webthing example:
 DEVELOP
 =======
 
-On Mozilla IoT gateway, adapter can be run from shell using:
+On WebThings Gateway, adapter can be run from shell using:
 
 ::
    
@@ -77,9 +76,9 @@ RESOURCES
 * https://en.wikipedia.org/wiki/Bluetooth_mesh_networking
 * https://purl.org/rzr/presentations
 * https://libregraphicsmeeting.org/2020/en/program.html
-* https://github.com/mozilla-iot/addon-list/pull/851
+* https://github.com/WebThingsIO/addon-list/pull/851
 * https://libraries.io/pypi/webthing
-* https://github.com/mozilla-iot/wiki/wiki/HOWTO:-Create-an-add-on
+* https://github.com/WebThingsIO/wiki/wiki/HOWTO:-Create-an-add-on
   
 .. |GitHub| image:: https://img.shields.io/github/forks/rzr/awox-mesh-light-webthing.svg?style=social&label=Fork&maxAge=2592000
    :target: https://GitHub.com/rzr/awox-mesh-light-webthing/network/

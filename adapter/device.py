@@ -1,7 +1,7 @@
 # -*- mode: python; python-indent-offset: 4; indent-tabs-mode: nil -*-
 # SPDX-License-Indentifier: MIT
 # Copyright: Phil Coval <https://purl.org/rzr>
-"""AwoxMeshLight adapter for Mozilla WebThings Gateway."""
+"""AwoxMeshLight adapter for WebThings Gateway."""
 
 import bluepy
 import os

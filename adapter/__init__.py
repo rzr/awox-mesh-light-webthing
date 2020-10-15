@@ -2,7 +2,7 @@
 # SPDX-License-Indentifier: MIT
 # Copyright: Phil Coval <https://purl.org/rzr>
 
-"""AwoxMeshLight adapter for Mozilla WebThings Gateway."""
+"""AwoxMeshLight adapter for WebThings Gateway."""
 
 import os
 

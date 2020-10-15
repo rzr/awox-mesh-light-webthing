@@ -2,7 +2,7 @@
 # -*- mode: python; python-indent-offset: 4; indent-tabs-mode: nil -*-
 # SPDX-License-Indentifier: MIT
 
-"""AwoxMeshLight adapter for Mozilla WebThings Gateway."""
+"""AwoxMeshLight adapter for WebThings Gateway."""
 
 import functools
 import signal
