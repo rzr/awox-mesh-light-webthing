@@ -21,7 +21,7 @@ addons_review_org ?= ${USER}
 addons_review_branch ?= sandbox/${USER}/review/master
 addons_review_url ?= ssh://github.com/${addons_review_org}/addon-list
 addons_review_http_url ?= ${addons_url}/compare/master...${addons_review_org}:${addons_review_branch}?expand=1
-
+pylint?=$(shell which pylint3 || which pylint || echo pylint)
 
 help:
 	@echo "## Usage:"
@@ -56,14 +56,11 @@ aframe/start: extra/aframe
 	@echo "# http://localhost:${port}/$<"
 	python -m SimpleHTTPServer ${port}
 
-rule/version/%: manifest.json package.json setup.py
+rule/version/%: manifest.json setup.py
 	-git describe --tags
 	jq < "$<" | jq '.version |= "${@F}"' > "$<.tmp"
 	jq < "$<.tmp" > "$<"
 	rm -f "$<.tmp"
-	jq < package.json | jq '.version |= "${@F}"' > package.json.tmp
-	jq < package.json.tmp > package.json
-	rm -f "package.json.tmp"
 	sed -e "s|\(.*version='\).*\('.*\)|\1${@F}\2|g" -i setup.py
 	-git commit -sm "Release ${@F}" $^
 	-git tag -sam "${project}-${@F}" "v${@F}" \
@@ -143,4 +140,5 @@ rule/checksum/push: rule/wait rule/checksum/update
 
 
 lint:
-	pylint3 *.py */*.py
+	echo ${pylint} --version
+	${pylint} *.py */*.py
