@@ -140,5 +140,5 @@ rule/checksum/push: rule/wait rule/checksum/update
 
 
 lint:
-	echo ${pylint} --version
+	${pylint} --version
 	${pylint} *.py */*.py

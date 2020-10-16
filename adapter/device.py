@@ -3,12 +3,11 @@
 # Copyright: Phil Coval <https://purl.org/rzr>
 """AwoxMeshLight adapter for WebThings Gateway."""
 
-import bluepy
 import os
 import random
 import time
 
-from gateway_addon import Action, Device, Property
+from gateway_addon import Device, Property
 
 _DEBUG = bool(os.getenv('DEBUG')) or False
 
@@ -113,7 +112,7 @@ class AwoxMeshLightDevice(Device):
                         ],
                         'properties': {
                             'preset': {
-                                'type': 'integer',                                
+                                'type': 'integer',
                                 'default': 0,
                                 'maximum': 6,
                                 'minimum': 0
@@ -158,9 +157,10 @@ class AwoxMeshLightDevice(Device):
         return color
 
     def control(self, name, value):
+        """ Update properties to controler"""
         try:
             if name == 'on':
-                if (value):
+                if value:
                     self.controller.on()
                 else:
                     self.controller.off()
@@ -172,18 +172,19 @@ class AwoxMeshLightDevice(Device):
             elif name == 'color':
                 color = AwoxMeshLightDevice.hex_to_rgb(value)
                 self.controller.setColor(**color)
-        except:
+        except Exception as ex:
             if _DEBUG:
-                print("error: Exception in control: ")
+                print("error: Exception in control: " + str(ex))
             self.reset()
 
     def reset(self):
+        """ Try to reconnect"""
         if _DEBUG:
             print("info: reset")
         try:
             self.controller.disconnect()
         finally:
-            time.sleep(2)            
+            time.sleep(2)
         try:
             self.controller.connect()
         finally:

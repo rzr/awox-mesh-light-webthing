@@ -26,7 +26,7 @@ logger.addHandler(handler)
 controller = awoxmeshlight.AwoxMeshLight(MAC)
 
 def set_color(hexcode):
-
+    """ Update controler """
     red = hexcode[1:3]
     red = "0x%s" % str(red)
     red = int(red, 0x10)
@@ -41,11 +41,12 @@ def set_color(hexcode):
 
     try:
         controller.setColor(red, green, blue)
-    except:
-        print('error:')
+    except Exception as ex:
+        print('error: ' + str(ex))
 
 
 def make_thing():
+    """ Build WebThing for awox-light """
     thing = Thing('urn:dev:ops:my-awox-light-1234',
                   'Awox Light',
                   ['OnOffSwitch', 'Light'],
@@ -92,6 +93,7 @@ def make_thing():
 
 
 def run_server():
+    """ Start http server with REST api """
     logging.info("controller: connect: %s" % MAC)
     controller.connect()
     logging.info("controller: model: %s" % controller.getModelNumber())
