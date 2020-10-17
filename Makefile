@@ -95,6 +95,9 @@ rule/addons/push: ${addons_json}
 rule/release/%: ${addons_json} rule/version/%
 	sed -e "s|\(.*\"version\": \)\"\(.*\)\"\(.*\)|\1\"${@F}\"\3|g" -i $<
 	sed -e "s|\(.*/${project}-\)\([0-9.]*\)\(-.*\)|\1${@F}\3|g" -i $<
+	${MAKE} rule/checksum/update
+	-git diff
+	${<D}/../tools/check-list.py ${project}
 	${MAKE} rule/addons/push message="Update to ${@F}"
 
 ${addons_json}:
@@ -102,16 +105,13 @@ ${addons_json}:
 	git clone ${addons_url} "${addons_dir}"
 	jq < "$@"
 
-rule/urls: ${addons_json}
-	jq '.packages[].url' < "$<" | xargs -n1 echo \
-| while read url ; do curl -s -I "$${url}"; done
+tmp/urls.lst: ${addons_json}
+	jq '.packages[].url' < "$<" | xargs -n1 echo > $@
 
-
-tmp/checksums.lst: ${addons_json} # Makefile
-	@jq '.packages[].url' < "$<" | xargs -n1 echo \
-| while read url ; do sleep 1 ; \
-curl -s -I "$${url}" | grep 'HTTP/1.1 200' > /dev/null \
-&& curl -s "$${url}" | sha256sum - ; \
+tmp/checksums.lst: tmp/urls.lst Makefile
+	cat $< | while read url ; do \
+  curl -L -s -I "$${url}" | grep -r 'HTTP/1.1 {200,302}' > /dev/null \
+  && curl -L -s "$${url}" | sha256sum - ; \
 done \
 | cut -d' ' -f1 | tee $@.tmp
 	mv $@.tmp $@
