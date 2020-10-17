@@ -21,7 +21,7 @@ URL = 'https://github.com/rzr/awox-mesh-light-webthing/'
 
 setup(
     name='awox-mesh-light-webthing',
-    version='0.0.7',
+    version='0.0.8',
     description='Awox Mesh Light WebThing',
     long_description=long_description,
     url=URL,
