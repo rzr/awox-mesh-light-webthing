@@ -6,13 +6,11 @@ AWOX-MESH-LIGHT-WEBTHING
 |License|
 |PyPi|
 |Fediverse|
+|Release|
 
 Webthings RESTful API for Awox's "SmartLight" (SKRLm-c9-E27).
 
 This lightbulb is supporting Bluetooth mesh.
-
-.. image:: https://github.com/rzr/awox-mesh-light-webthing/workflows/Release/badge.svg)
-   :target: https://github.com/rzr/awox-mesh-light-webthing/actions?query=workflow%3ARelease
 
 .. image:: https://peertube.mastodon.host/static/previews/058df607-2ca9-4a2c-be42-286644e5071e.jpg
    :target: https://mastodon.social/@rzr/104250255817500884#
@@ -93,3 +91,5 @@ RESOURCES
    :target: https://pypi.org/project/awox-mesh-light-webthing
 .. |Fediverse| image:: https://img.shields.io/mastodon/follow/279303?domain=https%3A%2F%2Fmastodon.social&style=social
    :target: https://mastodon.social/@rzr/104246455002891688
+.. |Release| image:: https://github.com/rzr/awox-mesh-light-webthing/workflows/Release/badge.svg
+   :target: https://github.com/rzr/awox-mesh-light-webthing/actions?query=workflow%3ARelease
