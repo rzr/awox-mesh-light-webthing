@@ -15,6 +15,8 @@ from webthing import (Property, SingleThing, Thing, Value,
 
 PORT = os.getenv('PORT') or 8888
 MAC = os.getenv('MAC') or "A4:C1:38:FF:FF:FF"
+NAME = os.getenv('NAME') or 'unpaired'
+PASSWORD = os.getenv('PASSWORD') or '1234'
 
 handler = logging.StreamHandler()
 handler.setLevel(logging.DEBUG)
@@ -23,7 +25,7 @@ logger = logging.getLogger("awoxmeshlight")
 logger.setLevel(logging.DEBUG)
 logger.addHandler(handler)
 
-controller = awoxmeshlight.AwoxMeshLight(MAC)
+controller = awoxmeshlight.AwoxMeshLight(MAC, NAME, PASSWORD)
 
 def set_color(hexcode):
     """ Update controler """
@@ -94,7 +96,7 @@ def make_thing():
 
 def run_server():
     """ Start http server with REST api """
-    logging.info("controller: connect: %s" % MAC)
+    logging.info("controller: connect: %s %s" % (MAC, NAME))
     controller.connect()
     logging.info("controller: model: %s" % controller.getModelNumber())
     thing = make_thing()
