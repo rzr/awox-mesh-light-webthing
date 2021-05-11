@@ -14,6 +14,10 @@ webthing_url?=http://localhost:${webthing_port}
 builder_url ?= https://github.com/WebThingsIO/addon-builder
 builder_dir ?= tmp/addon-builder
 module_dir ?= ${builder_dir}/${project}
+
+gateway_addon_version?=v1.0.0
+gateway_addon_url?=https://github.com/WebThingsIO/gateway-addon-python
+
 addons_url ?= https://github.com/WebThingsIO/addon-list
 addons_dir ?= tmp/addon-list
 addons_json ?= ${addons_dir}/addons/${project}.json
@@ -21,7 +25,11 @@ addons_review_org ?= ${USER}
 addons_review_branch ?= sandbox/${USER}/review/master
 addons_review_url ?= ssh://github.com/${addons_review_org}/addon-list
 addons_review_http_url ?= ${addons_url}/compare/master...${addons_review_org}:${addons_review_branch}?expand=1
+
+python?=$(shell which python3 || which python || echo python)
 pylint?=$(shell which pylint3 || which pylint || echo pylint)
+pip?=$(shell which pip3 || which pip || echo pip)
+
 
 help:
 	@echo "## Usage:"
@@ -32,6 +40,15 @@ help:
 
 start: example/awox_mesh_light_single_webthing.py
 	MAC=${mac} $<
+
+gateway_addon:
+	git clone --branch ${gateway_addon_version} --depth 1 \
+	  ${gateway_addon_url} $@
+	cd $@ && ${pip} install -rrequirements.txt
+	cd $@ && ${python} ./setup.py build
+
+run: main.py gateway_addon
+	PYTHONPATH=gateway_addon/gateway_addon/.. ${<D}/${<F}
 
 demo:
 	curl \
